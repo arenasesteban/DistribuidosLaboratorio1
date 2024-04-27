@@ -1,5 +1,3 @@
-import csv
-
 def leer_archivo(archivo):
     datos = []
     with open(archivo, 'r') as file:
@@ -42,7 +40,7 @@ def guardar_resultados(resultados, archivo_salida):
 archivo_entrada = "archivos/archivo-entrada-20.txt"
 datos = leer_archivo(archivo_entrada)
 resultados = calcular_temperaturas(datos)
-guardar_resultados(resultados, "archivos/archivo-salida.txt")
+guardar_resultados(resultados, "archivos/archivo-salida-monolitico.txt")
 
 for estacion, temp_min, temp_max, temp_promedio in resultados:
     print(f"Estación: {estacion} - Temp. Mínima: {temp_min} - Temp. Máxima: {temp_max} - Temp. Promedio: {temp_promedio:.1f}")
