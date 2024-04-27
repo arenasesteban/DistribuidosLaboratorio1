@@ -1,3 +1,5 @@
+import csv
+
 def leer_archivo(archivo):
     datos = []
     with open(archivo, 'r') as file:
@@ -31,9 +33,16 @@ def calcular_temperaturas(datos):
             
     return resultados
 
+def guardar_resultados(resultados, archivo_salida):
+    with open(archivo_salida, 'w') as file:
+        file.write("Estacion;Temp. Minima;Temp. Maxima;Temp. Promedio\n")
+        for estacion, temp_min, temp_max, temp_promedio in resultados:
+            file.write(f"{estacion};{temp_min};{temp_max};{temp_promedio:.1f}\n")
+
 archivo_entrada = "archivos/archivo-entrada-20.txt"
 datos = leer_archivo(archivo_entrada)
 resultados = calcular_temperaturas(datos)
+guardar_resultados(resultados, "archivos/archivo-salida.txt")
 
 for estacion, temp_min, temp_max, temp_promedio in resultados:
     print(f"Estación: {estacion} - Temp. Mínima: {temp_min} - Temp. Máxima: {temp_max} - Temp. Promedio: {temp_promedio:.1f}")
