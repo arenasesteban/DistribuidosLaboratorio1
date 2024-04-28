@@ -53,32 +53,35 @@ def guardar_resultados(rank_origen, archivo_salida, comm):
         for estacion, temp_min, temp_max, temp_total, contador in resultados:
             temp_promedio = temp_total / contador
             file.write(f"{estacion};{temp_min};{temp_max};{temp_promedio:.1f}\n")
-    for estacion, temp_min, temp_max, temp_promedio in resultados:
-        etiqueta_resultado = tk.Label(ventana, text=f"Estación: {estacion} - Temp. Mínima: {temp_min} - Temp. Máxima: {temp_max} - Temp. Promedio: {temp_promedio:.1f}")
-        etiqueta_resultado.pack()
+            etiqueta_resultado = tk.Label(ventana, text=f"Estación: {estacion} - Temp. Mínima: {temp_min} - Temp. Máxima: {temp_max} - Temp. Promedio: {temp_promedio:.1f}")
+            etiqueta_resultado.pack()
+        
 
-def servicios():
-    if __name__ == "__main__":
-        comm = MPI.COMM_WORLD
-        rank = comm.Get_rank()
+def interfaz():
+    guardar_resultados(1, archivo_salida, comm)
+
+if __name__ == "__main__":
+    comm = MPI.COMM_WORLD
+    rank = comm.Get_rank()
+
+    if rank == 0:
+        archivo_entrada = "archivos/archivo-entrada-20.txt"
+        leer_archivo(archivo_entrada, 1, comm)
+    elif rank == 1:
+        calcular_temperaturas(0, 2, comm)
+    else:
+        archivo_salida = "archivos/archivo-salida-eventos.txt"
+        # Crear la ventana
+        ventana = tk.Tk()
+        ventana.title("Arquitectura eventos")
+        ventana.geometry("400x300")  # Tamaño de la ventana
+
+        # Crear un botón que ejecutará la función al ser presionado
+        boton = tk.Button(ventana, text="Presionar para ejecutar", command=interfaz)
+        boton.pack()
+
+        # Ejecutar el bucle principal
+        ventana.mainloop()
+        
+
     
-        if rank == 0:
-            archivo_entrada = "archivos/archivo-entrada-20.txt"
-            leer_archivo(archivo_entrada, 1, comm)
-        elif rank == 1:
-            calcular_temperaturas(0, 2, comm)
-        else:
-            archivo_salida = "archivos/archivo-salida-eventos.txt"
-            guardar_resultados(1, archivo_salida, comm)
-            
-# Crear la ventana
-ventana = tk.Tk()
-ventana.title("Arquitectura monolitica")
-ventana.geometry("400x300")  # Tamaño de la ventana
-
-# Crear un botón que ejecutará la función al ser presionado
-boton = tk.Button(ventana, text="Presionar para ejecutar", command=servicios)
-boton.pack()
-
-# Ejecutar el bucle principal
-ventana.mainloop()
