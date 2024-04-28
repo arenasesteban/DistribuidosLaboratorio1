@@ -1,5 +1,3 @@
-from mpi4py import MPI
-
 def leer_archivo(archivo):
     datos = []
     with open(archivo, 'r') as file:
@@ -39,15 +37,10 @@ def guardar_resultados(resultados, archivo_salida):
         for estacion, temp_min, temp_max, temp_promedio in resultados:
             file.write(f"{estacion};{temp_min};{temp_max};{temp_promedio:.1f}\n")
 
-if __name__ == "__main__":
-    comm = MPI.COMM_WORLD
-    rank = comm.Get_rank()
+archivo_entrada = "archivos/archivo-entrada-10.txt"
+datos = leer_archivo(archivo_entrada)
+resultados = calcular_temperaturas(datos)
+guardar_resultados(resultados, "archivos/archivo-salida-monolitico.txt")
 
-    if rank == 0:
-        archivo_entrada = "archivos/archivo-entrada-20.txt"
-        datos = leer_archivo(archivo_entrada)
-        comm.send(datos, dest=1)
-    else:
-        datos = comm.recv(source=0)  # Recibimos los datos
-        resultados = calcular_temperaturas(datos)
-        guardar_resultados(resultados, "archivos/archivo-salida-microservicios.txt")
+for estacion, temp_min, temp_max, temp_promedio in resultados:
+    print(f"Estación: {estacion} - Temp. Mínima: {temp_min} - Temp. Máxima: {temp_max} - Temp. Promedio: {temp_promedio:.1f}")
