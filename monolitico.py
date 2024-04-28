@@ -1,4 +1,9 @@
 import tkinter as tk
+import time
+
+ini_time = 0.0
+fin_time = 0.0
+
 
 def leer_archivo(archivo):
     datos = []
@@ -40,14 +45,22 @@ def guardar_resultados(resultados, archivo_salida):
             file.write(f"{estacion};{temp_min};{temp_max};{temp_promedio:.1f}\n")
 
 def monolitico():
+    ini_time = time.time()
     archivo_entrada = "archivos/archivo-entrada-10.txt"
     datos = leer_archivo(archivo_entrada)
     resultados = calcular_temperaturas(datos)
+    fin_time = time.time()
+    tiempo_procesamiento = fin_time - ini_time
+
     guardar_resultados(resultados, "archivos/archivo-salida-monolitico.txt")
     
     for estacion, temp_min, temp_max, temp_promedio in resultados:
         print(f"Estación: {estacion} - Temp. Mínima: {temp_min} - Temp. Máxima: {temp_max} - Temp. Promedio: {temp_promedio:.1f}")
     
+    # Mostrar el tiempo de procesamiento
+    etiqueta_tiempo = tk.Label(ventana, text="Tiempo de procesamiento: {:.2f} segundos".format(tiempo_procesamiento))
+    etiqueta_tiempo.pack()
+
     for estacion, temp_min, temp_max, temp_promedio in resultados:
         etiqueta_resultado = tk.Label(ventana, text=f"Estación: {estacion} - Temp. Mínima: {temp_min} - Temp. Máxima: {temp_max} - Temp. Promedio: {temp_promedio:.1f}")
         etiqueta_resultado.pack()
@@ -57,6 +70,8 @@ def monolitico():
 ventana = tk.Tk()
 ventana.title("Arquitectura monolitica")
 ventana.geometry("400x300")  # Tamaño de la ventana
+
+
 
 # Crear un botón que ejecutará la función al ser presionado
 boton = tk.Button(ventana, text="Presionar para ejecutar", command=monolitico)

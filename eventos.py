@@ -1,5 +1,11 @@
 from mpi4py import MPI
 import tkinter as tk
+import time
+
+ini_time = 0.0
+fin_time = 0.0
+tiempo_procesamiento = 0.0
+
 
 # Definir una constante para la señal de fin de transmisión
 FIN_TRANSMISION = "FIN"
@@ -50,6 +56,9 @@ def guardar_resultados(rank_origen, archivo_salida, comm):
     
     with open(archivo_salida, 'w') as file:
         file.write("Estacion;Temp. Minima;Temp. Maxima;Temp. Promedio\n")
+
+        etiqueta_tiempo = tk.Label(ventana, text="Tiempo de procesamiento: {:.2f} segundos".format(tiempo_procesamiento))
+        etiqueta_tiempo.pack()
         for estacion, temp_min, temp_max, temp_total, contador in resultados:
             temp_promedio = temp_total / contador
             file.write(f"{estacion};{temp_min};{temp_max};{temp_promedio:.1f}\n")
@@ -60,15 +69,23 @@ def guardar_resultados(rank_origen, archivo_salida, comm):
 def interfaz():
     guardar_resultados(1, archivo_salida, comm)
 
+def deshabilitar_boton():
+    boton.config(state="disabled")
+
 if __name__ == "__main__":
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
 
     if rank == 0:
-        archivo_entrada = "archivos/archivo-entrada-20.txt"
+        ini_time= time.time()
+        print(ini_time)
+        archivo_entrada = "archivos/archivo-entrada-1000.txt"
         leer_archivo(archivo_entrada, 1, comm)
     elif rank == 1:
         calcular_temperaturas(0, 2, comm)
+        fin_time = time.time()
+        print(fin_time)
+        tiempo_procesamiento = fin_time - ini_time
     else:
         archivo_salida = "archivos/archivo-salida-eventos.txt"
         # Crear la ventana
@@ -77,7 +94,7 @@ if __name__ == "__main__":
         ventana.geometry("400x300")  # Tamaño de la ventana
 
         # Crear un botón que ejecutará la función al ser presionado
-        boton = tk.Button(ventana, text="Presionar para ejecutar", command=interfaz)
+        boton = tk.Button(ventana, text="Presionar para ejecutar", command=lambda: [interfaz(), deshabilitar_boton()])
         boton.pack()
 
         # Ejecutar el bucle principal

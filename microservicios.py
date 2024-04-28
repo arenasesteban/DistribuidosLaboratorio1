@@ -1,5 +1,10 @@
 from mpi4py import MPI
 import tkinter as tk
+import time
+
+ini_time = 0.0
+fin_time = 0.0
+tiempo_procesamiento = 0.0
 
 def leer_archivo(archivo):
     datos = []
@@ -43,22 +48,33 @@ def guardar_resultados(resultados, archivo_salida):
  
 def interfaz():
     guardar_resultados(resultados, "archivos/archivo-salida-microservicios.txt")
+    # Mostrar el tiempo de procesamiento
+    etiqueta_tiempo = tk.Label(ventana, text="Tiempo de procesamiento: {:.2f} segundos".format(tiempo_procesamiento))
+    etiqueta_tiempo.pack()
     for estacion, temp_min, temp_max, temp_promedio in resultados:
         etiqueta_resultado = tk.Label(ventana, text=f"Estación: {estacion} - Temp. Mínima: {temp_min} - Temp. Máxima: {temp_max} - Temp. Promedio: {temp_promedio:.1f}")
         etiqueta_resultado.pack() 
     
+def deshabilitar_boton():
+    boton.config(state="disabled")
+
 
 if __name__ == "__main__":
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
 
     if rank == 0:
-        archivo_entrada = "archivos/archivo-entrada-20.txt"
+        ini_time = time.time()
+        print(ini_time)
+        archivo_entrada = "archivos/archivo-entrada-1000.txt"
         datos = leer_archivo(archivo_entrada)
         comm.send(datos, dest = 1)
     elif rank == 1:
         datos = comm.recv(source = 0)
         resultados = calcular_temperaturas(datos)
+        fin_time = time.time()
+        print(fin_time)
+        tiempo_procesamiento = fin_time - ini_time
         comm.send(resultados, dest = 2) 
     else:
         resultados = comm.recv(source = 1)
@@ -71,7 +87,7 @@ if __name__ == "__main__":
         
 
         # Crear un botón que ejecutará la función al ser presionado
-        boton = tk.Button(ventana, text="Presionar para ejecutar", command=interfaz)
+        boton = tk.Button(ventana, text="Presionar para ejecutar", command=lambda: [interfaz(), deshabilitar_boton()])
         boton.pack()
         
 

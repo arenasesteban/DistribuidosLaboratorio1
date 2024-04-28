@@ -1,6 +1,26 @@
 Estacion;Temp. Minima;Temp. Maxima;Temp. Promedio
+Budapest;10.3;10.3;10.3
+Tokyo;16.5;16.5;16.5
+Paris;22.1;22.1;22.1
+Moscow;3.8;3.8;3.8
+Sydney;25.9;25.9;25.9
+Rio de Janeiro;30.7;30.7;30.7
+Dublin;14.8;14.8;14.8
+Cairo;29.5;29.5;29.5
+Mumbai;32.0;32.0;32.0
+Los Angeles;24.6;24.6;24.6
+London;17.2;17.2;17.2
+Bangkok;35.1;35.1;35.1
+Dubai;38.6;38.6;38.6
+Berlin;13.4;13.4;13.4
+Singapore;31.8;31.8;31.8
+Rome;26.0;26.0;26.0
+Amsterdam;15.7;15.7;15.7
+Seoul;18.9;18.9;18.9
+Beijing;21.3;21.3;21.3
+Shanghai;23.6;23.6;23.6
 Hamburg;12.0;18.5;15.2
-Bulawayo;8.9;10.2;9.6
+Bulawayo;8.9;14.6;11.2
 Palembang;37.0;38.8;37.6
 St. John's;15.2;16.8;16.0
 Cracow;12.6;14.3;13.4
@@ -8,5 +28,11 @@ Bridgetown;25.1;26.9;26.0
 Istanbul;6.2;23.0;12.7
 Roseau;34.4;34.4;34.4
 Conakry;31.2;31.2;31.2
-New York;20.6;20.6;20.6
+New York;20.6;26.8;23.7
 Toronto;32.7;32.7;32.7
+Boston;28.4;30.2;29.3
+Miami;22.3;22.3;22.3
+Chicago;19.9;21.9;20.9
+Houston;17.6;17.6;17.6
+Seattle;11.5;11.5;11.5
+Philadelphia;27.3;27.3;27.3
