@@ -46,7 +46,7 @@ def guardar_resultados(resultados, archivo_salida):
 
 def monolitico():
     ini_time = time.time()
-    archivo_entrada = "archivos/archivo-entrada-20.txt"
+    archivo_entrada = "archivos/archivo-entrada-1000.txt"
     datos = leer_archivo(archivo_entrada)
     resultados = calcular_temperaturas(datos)
     fin_time = time.time()
@@ -54,9 +54,6 @@ def monolitico():
     print(fin_time)
 
     guardar_resultados(resultados, "archivos/archivo-salida-monolitico.txt")
-    
-    for estacion, temp_min, temp_max, temp_promedio in resultados:
-        print(f"Estación: {estacion} - Temp. Mínima: {temp_min} - Temp. Máxima: {temp_max} - Temp. Promedio: {temp_promedio:.1f}")
     
 
     for estacion, temp_min, temp_max, temp_promedio in resultados:

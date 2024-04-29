@@ -77,7 +77,7 @@ if __name__ == "__main__":
     if rank == 0:
         ini_time= time.time()
         print(ini_time)
-        archivo_entrada = "archivos/archivo-entrada-20.txt"
+        archivo_entrada = "archivos/archivo-entrada-1000.txt"
         leer_archivo(archivo_entrada, 1, comm)
     elif rank == 1:
         calcular_temperaturas(0, 2, comm)

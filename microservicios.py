@@ -64,7 +64,7 @@ if __name__ == "__main__":
     if rank == 0:
         ini_time = time.time()
         print(ini_time)
-        archivo_entrada = "archivos/archivo-entrada-20.txt"
+        archivo_entrada = "archivos/archivo-entrada-1000.txt"
         datos = leer_archivo(archivo_entrada)
         comm.send(datos, dest = 1)
     elif rank == 1:
