@@ -4,7 +4,6 @@ import time
 
 ini_time = 0.0
 fin_time = 0.0
-tiempo_procesamiento = 0.0
 
 def leer_archivo(archivo):
     datos = []
@@ -49,8 +48,7 @@ def guardar_resultados(resultados, archivo_salida):
 def interfaz():
     guardar_resultados(resultados, "archivos/archivo-salida-microservicios.txt")
     # Mostrar el tiempo de procesamiento
-    etiqueta_tiempo = tk.Label(ventana, text="Tiempo de procesamiento: {:.2f} segundos".format(tiempo_procesamiento))
-    etiqueta_tiempo.pack()
+
     for estacion, temp_min, temp_max, temp_promedio in resultados:
         etiqueta_resultado = tk.Label(ventana, text=f"Estación: {estacion} - Temp. Mínima: {temp_min} - Temp. Máxima: {temp_max} - Temp. Promedio: {temp_promedio:.1f}")
         etiqueta_resultado.pack() 
@@ -66,7 +64,7 @@ if __name__ == "__main__":
     if rank == 0:
         ini_time = time.time()
         print(ini_time)
-        archivo_entrada = "archivos/archivo-entrada-1000.txt"
+        archivo_entrada = "archivos/archivo-entrada-20.txt"
         datos = leer_archivo(archivo_entrada)
         comm.send(datos, dest = 1)
     elif rank == 1:
@@ -74,7 +72,6 @@ if __name__ == "__main__":
         resultados = calcular_temperaturas(datos)
         fin_time = time.time()
         print(fin_time)
-        tiempo_procesamiento = fin_time - ini_time
         comm.send(resultados, dest = 2) 
     else:
         resultados = comm.recv(source = 1)

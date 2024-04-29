@@ -4,7 +4,6 @@ import time
 
 ini_time = 0.0
 fin_time = 0.0
-tiempo_procesamiento = 0.0
 
 
 # Definir una constante para la señal de fin de transmisión
@@ -57,8 +56,7 @@ def guardar_resultados(rank_origen, archivo_salida, comm):
     with open(archivo_salida, 'w') as file:
         file.write("Estacion;Temp. Minima;Temp. Maxima;Temp. Promedio\n")
 
-        etiqueta_tiempo = tk.Label(ventana, text="Tiempo de procesamiento: {:.2f} segundos".format(tiempo_procesamiento))
-        etiqueta_tiempo.pack()
+
         for estacion, temp_min, temp_max, temp_total, contador in resultados:
             temp_promedio = temp_total / contador
             file.write(f"{estacion};{temp_min};{temp_max};{temp_promedio:.1f}\n")
@@ -79,13 +77,12 @@ if __name__ == "__main__":
     if rank == 0:
         ini_time= time.time()
         print(ini_time)
-        archivo_entrada = "archivos/archivo-entrada-1000.txt"
+        archivo_entrada = "archivos/archivo-entrada-20.txt"
         leer_archivo(archivo_entrada, 1, comm)
     elif rank == 1:
         calcular_temperaturas(0, 2, comm)
         fin_time = time.time()
         print(fin_time)
-        tiempo_procesamiento = fin_time - ini_time
     else:
         archivo_salida = "archivos/archivo-salida-eventos.txt"
         # Crear la ventana

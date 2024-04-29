@@ -46,20 +46,18 @@ def guardar_resultados(resultados, archivo_salida):
 
 def monolitico():
     ini_time = time.time()
-    archivo_entrada = "archivos/archivo-entrada-10.txt"
+    archivo_entrada = "archivos/archivo-entrada-20.txt"
     datos = leer_archivo(archivo_entrada)
     resultados = calcular_temperaturas(datos)
     fin_time = time.time()
-    tiempo_procesamiento = fin_time - ini_time
+    print(ini_time)
+    print(fin_time)
 
     guardar_resultados(resultados, "archivos/archivo-salida-monolitico.txt")
     
     for estacion, temp_min, temp_max, temp_promedio in resultados:
         print(f"Estación: {estacion} - Temp. Mínima: {temp_min} - Temp. Máxima: {temp_max} - Temp. Promedio: {temp_promedio:.1f}")
     
-    # Mostrar el tiempo de procesamiento
-    etiqueta_tiempo = tk.Label(ventana, text="Tiempo de procesamiento: {:.2f} segundos".format(tiempo_procesamiento))
-    etiqueta_tiempo.pack()
 
     for estacion, temp_min, temp_max, temp_promedio in resultados:
         etiqueta_resultado = tk.Label(ventana, text=f"Estación: {estacion} - Temp. Mínima: {temp_min} - Temp. Máxima: {temp_max} - Temp. Promedio: {temp_promedio:.1f}")
